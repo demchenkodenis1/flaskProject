@@ -1,12 +1,24 @@
 from flask import Flask
 
-app = Flask(__name__)
+from article.views import article
+from user.views import user
+from index.views import index
+from report.views import report
+
+VIEWS = [
+    index,
+    user,
+    article,
+    report
+]
 
 
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+def create_app() -> Flask:
+    app = Flask(__name__)
+    register_blueprints(app)
+    return app
 
 
-if __name__ == '__main__':
-    app.run()
+def register_blueprints(app: Flask):
+    for view in VIEWS:
+        app.register_blueprint(view)
